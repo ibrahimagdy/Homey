@@ -1,6 +1,4 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:homey/pages/login_screen/login_screen.dart';
 import 'package:homey/pages/onBoarding_screens/onboarding_content.dart';
 
@@ -52,67 +50,64 @@ class _OnBoardingState extends State<OnBoarding> {
             ),
             child: Scaffold(
               backgroundColor: Colors.transparent,
-              body: Align(
-                alignment: Alignment.center,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Image.asset(
-                      contents[i].image,
+              body: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Image.asset(
+                    contents[i].image,
+                  ),
+                  SizedBox(height: mediaQuery.height * 0.03),
+                  Text(
+                    contents[i].title,
+                    style: theme.textTheme.titleMedium,
+                    textAlign: TextAlign.center,
+                  ),
+                  SizedBox(height: mediaQuery.height * 0.02),
+                  Text(
+                    contents[i].desc,
+                    style: theme.textTheme.bodyMedium,
+                    textAlign: TextAlign.center,
+                  ),
+                  SizedBox(height: mediaQuery.height * 0.06),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: List.generate(
+                      contents.length,
+                      (index) => buildContainer(index, context),
                     ),
-                    SizedBox(height: mediaQuery.height * 0.03),
-                    Text(
-                      contents[i].title,
-                      style: theme.textTheme.titleMedium,
-                      textAlign: TextAlign.center,
-                    ),
-                    SizedBox(height: mediaQuery.height * 0.02),
-                    Text(
-                      contents[i].desc,
-                      style: theme.textTheme.bodyMedium,
-                      textAlign: TextAlign.center,
-                    ),
-                    SizedBox(height: mediaQuery.height * 0.06),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: List.generate(
-                        contents.length,
-                        (index) => buildContainer(index, context),
-                      ),
-                    ),
-                    SizedBox(height: mediaQuery.height * 0.03),
-                    SizedBox(
-                      width: mediaQuery.width * 0.75,
-                      height: mediaQuery.height * 0.06,
-                      child: ElevatedButton(
-                        onPressed: () {
-                          if (currentIndex == contents.length - 1) {
-                            Navigator.pushReplacementNamed(
-                                context, LoginScreen.routeName);
-                          }
-                          controller.nextPage(
-                            duration: const Duration(milliseconds: 800),
-                            curve: Curves.linear,
-                          );
-                        },
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: theme.colorScheme.primary,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(25),
-                          ),
+                  ),
+                  SizedBox(height: mediaQuery.height * 0.03),
+                  SizedBox(
+                    width: mediaQuery.width * 0.75,
+                    height: mediaQuery.height * 0.06,
+                    child: ElevatedButton(
+                      onPressed: () {
+                        if (currentIndex == contents.length - 1) {
+                          Navigator.pushReplacementNamed(
+                              context, LoginScreen.routeName);
+                        }
+                        controller.nextPage(
+                          duration: const Duration(milliseconds: 800),
+                          curve: Curves.linear,
+                        );
+                      },
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: theme.colorScheme.primary,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(25),
                         ),
-                        child: Text(
-                          currentIndex == contents.length - 1
-                              ? "Get Started!"
-                              : "Next",
-                          style: theme.textTheme.titleMedium!.copyWith(
-                            fontWeight: FontWeight.w500,
-                          ),
+                      ),
+                      child: Text(
+                        currentIndex == contents.length - 1
+                            ? "Get Started!"
+                            : "Next",
+                        style: theme.textTheme.titleMedium!.copyWith(
+                          fontWeight: FontWeight.w500,
                         ),
                       ),
                     ),
-                  ],
-                ),
+                  ),
+                ],
               ),
             ),
           );

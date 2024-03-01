@@ -13,12 +13,12 @@ class ApplicationTheme {
         titleLarge: GoogleFonts.pacifico(color: Colors.white, fontSize: 78),
         titleMedium: GoogleFonts.poppins(
           color: Colors.white,
-          fontSize: 22,
+          fontSize: 20,
           fontWeight: FontWeight.bold,
         ),
         bodyMedium: GoogleFonts.poppins(
           color: const Color(0xff7DD7DF),
-          fontSize: 18,
+          fontSize: 16,
           fontWeight: FontWeight.w500,
         )),
   );
