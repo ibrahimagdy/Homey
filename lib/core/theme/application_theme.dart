@@ -38,6 +38,11 @@ class ApplicationTheme {
               color: Color.fromARGB(255, 66, 61, 61),
             ),
           ],
+        ),
+        labelMedium: GoogleFonts.poppins(
+          color: primaryColor,
+          fontSize: 14,
+          fontWeight: FontWeight.w500,
         )),
   );
 }
