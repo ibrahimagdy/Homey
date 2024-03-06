@@ -1,22 +1,23 @@
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:homey/core/widgets/custom_login_button.dart';
 import 'package:homey/core/widgets/custom_text_form_field.dart';
-import 'package:homey/pages/register_screen/register_screen.dart';
+import 'package:homey/pages/login_screen/login_screen.dart';
 
-class LoginScreen extends StatefulWidget {
-  static const String routeName = "Login";
+class RegisterScreen extends StatefulWidget {
+  static const String routeName = "Register";
 
-  const LoginScreen({super.key});
+  const RegisterScreen({super.key});
 
   @override
-  State<LoginScreen> createState() => _LoginScreenState();
+  State<RegisterScreen> createState() => _RegisterScreenState();
 }
 
-class _LoginScreenState extends State<LoginScreen> {
+class _RegisterScreenState extends State<RegisterScreen> {
   TextEditingController emailController = TextEditingController();
+  TextEditingController nameController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
+  TextEditingController confirmPasswordController = TextEditingController();
   bool isViasble = true;
+  bool confirmPasswordVisale = true;
   var formKey = GlobalKey<FormState>();
 
   @override
@@ -32,6 +33,19 @@ class _LoginScreenState extends State<LoginScreen> {
       ),
       child: Scaffold(
         backgroundColor: Colors.transparent,
+        appBar: AppBar(
+          backgroundColor: Colors.transparent,
+          leading: IconButton(
+            icon: Icon(
+              Icons.arrow_back_ios_new,
+              color: theme.primaryColor,
+              size: 32,
+            ),
+            onPressed: () {
+              Navigator.pushNamed(context, LoginScreen.routeName);
+            },
+          ),
+        ),
         body: SafeArea(
           child: SingleChildScrollView(
             child: Form(
@@ -40,18 +54,12 @@ class _LoginScreenState extends State<LoginScreen> {
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
                   const SizedBox(
-                    height: 15,
-                  ),
-                  Padding(
-                    padding:
-                        const EdgeInsets.symmetric(horizontal: 23, vertical: 5),
-                    child: Text("Welcome to",
-                        style: theme.textTheme.displayMedium),
+                    height: 30,
                   ),
                   Padding(
                     padding: const EdgeInsets.only(left: 30.0),
                     child: Text(
-                      "Homey!",
+                      "Sign up",
                       style: theme.textTheme.displayMedium!.copyWith(
                         color: theme.primaryColor,
                         fontWeight: FontWeight.bold,
@@ -66,7 +74,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                   Container(
                     margin: const EdgeInsets.all(20),
-                    height: mediaQuery.height * 0.64,
+                    height: mediaQuery.height * 0.55,
                     decoration: BoxDecoration(
                       color: const Color(0xff002445).withOpacity(0.45),
                       borderRadius: BorderRadius.circular(10),
@@ -89,6 +97,17 @@ class _LoginScreenState extends State<LoginScreen> {
                               return null;
                             },
                             hintText: "Email",
+                          ),
+                          const SizedBox(height: 13),
+                          CustomTextFormField(
+                            controller: nameController,
+                            validator: (value) {
+                              if (value == null || value.trim().isEmpty) {
+                                return "You must enter your Name";
+                              }
+                              return null;
+                            },
+                            hintText: "Name",
                           ),
                           const SizedBox(height: 13),
                           CustomTextFormField(
@@ -119,86 +138,74 @@ class _LoginScreenState extends State<LoginScreen> {
                             ),
                           ),
                           const SizedBox(height: 20),
+                          CustomTextFormField(
+                            controller: confirmPasswordController,
+                            hintText: "Confirm Password",
+                            obscureText: confirmPasswordVisale,
+                            validator: (value) {
+                              if (value == null || value.trim().isEmpty) {
+                                return "You must enter your password";
+                              }
+                              if (value != passwordController.text) {
+                                return "Password does't Match as above";
+                              }
+                              return null;
+                            },
+                            suffixIcon: GestureDetector(
+                              onTap: () {
+                                confirmPasswordVisale = !confirmPasswordVisale;
+                                setState(() {});
+                              },
+                              child: Padding(
+                                padding: const EdgeInsets.only(right: 8),
+                                child: Text(
+                                  confirmPasswordVisale == true
+                                      ? "View"
+                                      : "Hide",
+                                  style: const TextStyle(
+                                      color: Color(0xff14213D),
+                                      fontSize: 13,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                              ),
+                            ),
+                          ),
+                          const SizedBox(height: 28),
+                          Row(
+                            children: [
+                              Text(
+                                "By selecting agree and continue below,",
+                                style: theme.textTheme.labelMedium!.copyWith(
+                                    color: Colors.white, fontSize: 12),
+                              ),
+                            ],
+                          ),
+                          Row(
+                            children: [
+                              Text(
+                                "I agree to Terms of service and privacy policy",
+                                style: theme.textTheme.labelMedium!.copyWith(
+                                    color: const Color(0xff7DD7DF),
+                                    fontSize: 12),
+                              ),
+                            ],
+                          ),
+                          const SizedBox(height: 23),
                           ElevatedButton(
                             style: ElevatedButton.styleFrom(
                               backgroundColor: theme.primaryColor,
                               shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(10)),
                               padding: const EdgeInsets.symmetric(
-                                  horizontal: 136, vertical: 10),
+                                  horizontal: 60, vertical: 14),
                             ),
-                            onPressed: () {},
-                            child: Text("Login",
+                            onPressed: () {
+                              Navigator.pushNamed(
+                                  context, LoginScreen.routeName);
+                            },
+                            child: Text("Agree and Continue",
                                 style: theme.textTheme.bodySmall!.copyWith(
                                     color: Colors.white, fontSize: 18)),
-                          ),
-                          const SizedBox(height: 13),
-                          Text(
-                            "or",
-                            style: TextStyle(
-                              color: theme.colorScheme.secondary,
-                            ),
-                          ),
-                          const SizedBox(height: 13),
-                          const CustomLoginButton(
-                            icon: Icon(
-                              FontAwesomeIcons.facebook,
-                              color: Color(0xff316FF6),
-                              size: 27,
-                            ),
-                            iconText: "Continue With Facebook",
-                          ),
-                          const SizedBox(height: 13),
-                          const CustomLoginButton(
-                            icon: Image(
-                                image: AssetImage(
-                                    "assets/images/google_icon.png")),
-                            iconText: "Continue With Google",
-                          ),
-                          const SizedBox(height: 13),
-                          const CustomLoginButton(
-                            icon: Icon(
-                              FontAwesomeIcons.apple,
-                              size: 27,
-                            ),
-                            iconText: "Continue With Apple",
-                          ),
-                          Row(
-                            children: [
-                              Text(
-                                "Don't have an account ?",
-                                style: theme.textTheme.labelMedium!.copyWith(
-                                  color: Colors.white,
-                                  fontSize: 11,
-                                ),
-                              ),
-                              TextButton(
-                                onPressed: () {
-                                  Navigator.pushNamed(
-                                      context, RegisterScreen.routeName);
-                                },
-                                child: Text(
-                                  "Sign up",
-                                  style: theme.textTheme.bodyMedium!.copyWith(
-                                    fontSize: 13,
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: [
-                              InkWell(
-                                onTap: () {},
-                                child: Text(
-                                  "Forget My Password",
-                                  style: theme.textTheme.bodyMedium!.copyWith(
-                                    fontSize: 13,
-                                  ),
-                                ),
-                              ),
-                            ],
                           ),
                         ],
                       ),
