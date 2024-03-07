@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "617408916955",
+    "project_id": "homey-ace12",
+    "storage_bucket": "homey-ace12.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:617408916955:android:ab14dcecd64188fedccbfe",
+        "android_client_info": {
+          "package_name": "com.example.homey"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAW7vkRTtOtLMU_tZyCqbNkV9Kkj8cCoEg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,4 +1,7 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:homey/core/services/snackbar_service.dart';
 import 'package:homey/core/widgets/custom_text_form_field.dart';
 import 'package:homey/pages/login_screen/login_screen.dart';
 
@@ -54,7 +57,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
                   const SizedBox(
-                    height: 30,
+                    height: 20,
                   ),
                   Padding(
                     padding: const EdgeInsets.only(left: 30.0),
@@ -74,7 +77,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   ),
                   Container(
                     margin: const EdgeInsets.all(20),
-                    height: mediaQuery.height * 0.55,
+                    height: mediaQuery.height * 0.67,
                     decoration: BoxDecoration(
                       color: const Color(0xff002445).withOpacity(0.45),
                       borderRadius: BorderRadius.circular(10),
@@ -118,6 +121,11 @@ class _RegisterScreenState extends State<RegisterScreen> {
                               if (value == null || value.trim().isEmpty) {
                                 return "You must enter your password";
                               }
+                              var regularExpression = RegExp(
+                                  r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,}$');
+                              if (!regularExpression.hasMatch(value)) {
+                                return "Invalid Password";
+                              }
                               return null;
                             },
                             suffixIcon: GestureDetector(
@@ -137,7 +145,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                               ),
                             ),
                           ),
-                          const SizedBox(height: 20),
+                          const SizedBox(height: 13),
                           CustomTextFormField(
                             controller: confirmPasswordController,
                             hintText: "Confirm Password",
@@ -200,8 +208,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                   horizontal: 60, vertical: 14),
                             ),
                             onPressed: () {
-                              Navigator.pushNamed(
-                                  context, LoginScreen.routeName);
+                              register();
+                              // Navigator.pushNamed(
+                              //     context, LoginScreen.routeName);
                             },
                             child: Text("Agree and Continue",
                                 style: theme.textTheme.bodySmall!.copyWith(
@@ -218,5 +227,39 @@ class _RegisterScreenState extends State<RegisterScreen> {
         ),
       ),
     );
+  }
+
+  void register() async {
+    if (formKey.currentState!.validate()) {
+      String email = emailController.text.trim();
+      String password = passwordController.text.trim();
+      if (email.isEmpty) {
+        SnackBarService.showErrorMessage("Please Enter a valid email address");
+        return;
+      }
+      if (password.isEmpty) {
+        SnackBarService.showErrorMessage("Please Enter a valid password");
+        return;
+      }
+      EasyLoading.show();
+      try {
+        await FirebaseAuth.instance
+            .createUserWithEmailAndPassword(email: email, password: password);
+        EasyLoading.dismiss();
+        SnackBarService.showSuccessMessage(
+            "You have successfully created a new account");
+        Navigator.pop(context);
+      } on FirebaseAuthException catch (e) {
+        if (e.code == 'weak-password') {
+          EasyLoading.dismiss();
+          SnackBarService.showErrorMessage(
+              'The password provided is too weak.');
+        } else if (e.code == 'email-already-in-use') {
+          EasyLoading.dismiss();
+          SnackBarService.showErrorMessage(
+              'The account already exists for that email.');
+        }
+      }
+    }
   }
 }
